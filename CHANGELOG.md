@@ -4,6 +4,7 @@
 ### Added
 
 01.Interface refactoring
+
 for details, please visit: https://developer.zoom.us/docs/windows/windows-sdk-refactor-details/
 
 02.New interface of change inmeeting display user name and notification of inmeeting display user name changed

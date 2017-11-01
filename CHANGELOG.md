@@ -1,4 +1,18 @@
 # CHANGELOG
+## 2017-11-01
+
+### Added
+
+1.add two new callback events in IMeetingServiceEvent
+
+a>onMeetingStatisticsWarningNotification :  Meeting statistics warning notification callback
+
+b>onMeetingSecureKeyNotification : Meeting secure key notification, need to web backend and special account type support.
+
+2.fix crash bug of sdk cleanup
+
+3.minor bug fix
+
 ## 2017-10-10
 
 ### Added

@@ -53,27 +53,6 @@ a>wrap new c++ interface and callback event
 
 b>fix callback event does not worked issue
 
-3.electron sdk
-
-a>add more interface of setting service
-
-zoom_setting.js
-
-zoom_setting_audio.js
-
-zoom_setting_video.js
-
-zoom_setting_general.js
-
-zoom_setting_recording.js
-
-b>meeting service
-
-zoom_meeting_configuration.js
-
-zoom_meeting_info.js
-
-zoom_meeting.js
 
 ## 2017-11-01
 

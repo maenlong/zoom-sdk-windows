@@ -69,6 +69,10 @@ public:
 	void UpdateUserList(int nIndex, std::wstring strUserName, std::wstring strUserId, bool bAdd = true);
 	void CleanUpUserList();
 	void ShowWaiting(bool bWaiting, bool bShowLeave = false);
+	void SetMeetingNumber(std::wstring strNum);
+	void SetKeyAndSecret(std::wstring strKey, std::wstring strSecret);
+	void SetEmailAndPassword(std::wstring strEmail, std::wstring strPassword);
+	void Process();
 
 public:
 	LRESULT OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -209,7 +213,11 @@ private:
 	CMessageWnd*			m_pMessageWnd;
 	bool					m_bSDKInit;
 	ZOOM_SDK_NAMESPACE::INetworkConnectionHelper* m_pNetworkConnectionHelper;
-
+	std::wstring m_strMeetingNumber;
+	std::wstring m_strKey;
+	std::wstring m_strSecret;
+	std::wstring m_strEmail;
+	std::wstring m_strPassword;
 #if (defined ENABLE_CUSTOMIZED_UI)
 	CustomizeInMeetingUI m_inMeetingUI;
 #endif

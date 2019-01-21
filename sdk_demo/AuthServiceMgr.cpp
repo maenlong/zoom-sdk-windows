@@ -87,7 +87,8 @@ bool CAuthServiceMgr::Login(ZOOM_SDK_NAMESPACE::LoginParam& param)
 	if (!m_pAuthService)
 		return false;
 
-	if (m_pAuthService->Login(param) != ZOOM_SDK_NAMESPACE::SDKERR_SUCCESS)
+	int n = m_pAuthService->Login(param);
+	if (n != ZOOM_SDK_NAMESPACE::SDKERR_SUCCESS)
 		return false;
 	
 	return true;

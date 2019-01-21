@@ -1,4 +1,4 @@
-#include <windows.h>
+//#include <windows.h>
 #include "UIlib.h"
 #include "DemoUI.h"
 
@@ -15,6 +15,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 	pDemoUI->Create(NULL, _T("Windows app using zoom win sdk"), UI_WNDSTYLE_DIALOG, WS_EX_WINDOWEDGE);
 	pDemoUI->SetIcon(IDI_ICON_LOGO);
 	pDemoUI->CenterWindow();
+	pDemoUI->SetMeetingNumber(L"num");
+	pDemoUI->SetKeyAndSecret(L"key", L"secret");
+	pDemoUI->SetEmailAndPassword(L".com", L"123");
+	pDemoUI->Process();
 	pDemoUI->ShowModal();
 
 	if (pDemoUI)

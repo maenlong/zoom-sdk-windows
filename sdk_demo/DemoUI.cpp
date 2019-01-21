@@ -16,6 +16,11 @@ CDemoUI::CDemoUI()
 	m_pMessageWnd = NULL;
 	m_bSDKInit = false;
 	m_pNetworkConnectionHelper = NULL;
+	m_strMeetingNumber.clear();
+	m_strKey.clear();
+	m_strSecret.clear();
+	m_strEmail.clear();
+	m_strPassword.clear();
 }
 
 CDemoUI::~CDemoUI()
@@ -58,12 +63,11 @@ void CDemoUI::InitWindow()
 	rc.right = rc.left + 524;
 	rc.bottom = rc.top + 376;
 	if( !::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd)) ) return;
-	::SetWindowPos(m_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);
+	::SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);
 }
 
 void CDemoUI::InitAllControls()
 {
-
 	m_containerAuthUI = static_cast<CContainerUI*>(m_PaintManager.FindControl(_T("container_auth")));
 	m_containerUserUI = static_cast<CContainerUI*>(m_PaintManager.FindControl(_T("container_user")));
 	m_containerLoginUI = static_cast<CContainerUI*>(m_PaintManager.FindControl(_T("container_login")));
@@ -221,6 +225,7 @@ void CDemoUI::SwitchUIPageByType(UIPageType emPageType /* = UIPAGE_AUTH */)
 	}
 	else if (emPageType == UIPAGE_USER)
 	{
+		Login();
 		bUser = true;
 	}
 	else if (emPageType == UIPAGE_LOGIN)
@@ -447,9 +452,11 @@ bool CDemoUI::SDKAuth()
 		return false;
 
 	std::wstring strWebDomain = m_editWebDomain->GetText().GetData();
-	std::wstring strKey = m_editKey->GetText().GetData();
-	std::wstring strSecret = m_editSecret->GetText().GetData();
-	if (strKey.length() <= 0 || strSecret.length() <= 0)
+	//std::wstring strKey = m_editKey->GetText().GetData();
+	//std::wstring strSecret = m_editSecret->GetText().GetData();
+	//std::wstring m_strKey = L"EuBBNyM5i65EAs5jtxGe0ZuAuMrPVSmZNUlH";
+	//std::wstring m_strSecret = L"jTt2abv0sSR6SBz2CyPey9BKKjwb2kyilxyt";
+	if (m_strKey.length() <= 0 || m_strSecret.length() <= 0)
 		return false;
 
 	if (!m_bSDKInit)
@@ -460,8 +467,8 @@ bool CDemoUI::SDKAuth()
 	m_editWebDomain->SetEnabled(false);
 	
 	ZOOM_SDK_NAMESPACE::AuthParam authParam;
-	authParam.appKey = strKey.c_str();
-	authParam.appSecret = strSecret.c_str();
+	authParam.appKey = m_strKey.c_str();
+	authParam.appSecret = m_strSecret.c_str();
 	m_pAuthServiceMgr->Init();
 	bool bAuth = m_pAuthServiceMgr->SDKAuth(authParam);
 	if (bAuth)
@@ -474,19 +481,22 @@ bool CDemoUI::SDKAuth()
 
 bool CDemoUI::Login()
 {
-	if (!m_editEmail || !m_editEmail || !m_editSecret || !m_pAuthServiceMgr)
-		return false;
+// 	if (!m_editEmail || !m_editEmail || !m_editSecret || !m_pAuthServiceMgr)
+// 		return false;
 
-	std::wstring strEmail = m_editEmail->GetText().GetData();
-	std::wstring strPassword = m_editPassword->GetText().GetData();
-	if (strEmail.length() <= 0 || strPassword.length() <= 0)
+	//std::wstring strEmail = m_editEmail->GetText().GetData();
+	//std::wstring strPassword = m_editPassword->GetText().GetData();
+
+	//std::wstring m_strEmail = L"mael@yuntongxun.com";
+	//std::wstring strPassword = L"Aa123456";
+	if (m_strEmail.length() <= 0 || m_strPassword.length() <= 0)
 		return false;
 
 	bool bRememberMe = m_chkRememberMe->GetCheck();
 
 	ZOOM_SDK_NAMESPACE::LoginParam param;
-	param.ut.emailLogin.userName = strEmail.c_str();
-	param.ut.emailLogin.password = strPassword.c_str();
+	param.ut.emailLogin.userName = m_strEmail.c_str();
+	param.ut.emailLogin.password = m_strPassword.c_str();
 	param.ut.emailLogin.bRememberMe = bRememberMe;
 
 	bool bRet = m_pAuthServiceMgr->Login(param);
@@ -514,20 +524,21 @@ bool CDemoUI::Start()
 
 	return bRet;
 }
-
+ 
 bool CDemoUI::NormalUserStart()
 {
 	if (!m_editMeetingNumber || !m_pMeetingServiceMgr)
 		return false;
 
-	std::wstring strMeetingNumber =  m_editMeetingNumber->GetText().GetData();
-	if (strMeetingNumber.length() <= 0 )
+	//std::wstring strMeetingNumber =  m_editMeetingNumber->GetText().GetData();
+	//std::wstring m_strMeetingNumber = L"9917641434";
+	if (m_strMeetingNumber.length() <= 0 )
 			return false;
 
 	ZOOM_SDK_NAMESPACE::StartParam startParam;
 	startParam.userType = ZOOM_SDK_NAMESPACE::SDK_UT_NORMALUSER;
 	ZOOM_SDK_NAMESPACE::StartParam4NormalUser& normalParam = startParam.param.normaluserStart;
-	normalParam.meetingNumber = _wtoi64(strMeetingNumber.c_str());
+	normalParam.meetingNumber = _wtoi64(m_strMeetingNumber.c_str());
 
 	return m_pMeetingServiceMgr->Start(startParam);
 }
@@ -839,11 +850,11 @@ void CDemoUI::Notify( TNotifyUI& msg )
 		{
 			if (!m_bSDKInit)
 			{
-				SDKInit();
+				//SDKInit();
 			}
 			else
 			{
-				SDKAuth();
+				//SDKAuth();
 			}
 		}
 		else if (msg.pSender == m_btnNormal)
@@ -1082,6 +1093,29 @@ void CDemoUI::ShowWaiting(bool bWaiting, bool bShowLeave)
 	}
 }
 
+void CDemoUI::SetMeetingNumber(std::wstring strNum)
+{
+	m_strMeetingNumber = strNum;
+}
+
+void CDemoUI::SetKeyAndSecret(std::wstring strKey, std::wstring strSecret)
+{
+	m_strKey = strKey;
+	m_strSecret = strSecret;
+}
+
+void CDemoUI::SetEmailAndPassword(std::wstring strEmail, std::wstring strPassword)
+{
+	m_strEmail = strEmail;
+	m_strPassword = strPassword;
+}
+
+void CDemoUI::Process()
+{
+	SDKInit();
+	SDKAuth();
+}
+
 LRESULT CDemoUI::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
 	bHandled = FALSE;
@@ -1141,6 +1175,7 @@ void CDemoUI::onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret)
 	ShowWaiting(false);
 	if (ZOOM_SDK_NAMESPACE::AUTHRET_SUCCESS == ret)
 		SwitchUIPageByType(UIPAGE_USER);
+	
 	else
 	{
 		ShowStatus(UIPAGE_AUTH, ERROR_AUTH);
@@ -1153,11 +1188,17 @@ void CDemoUI::onLoginRet(ZOOM_SDK_NAMESPACE::LOGINSTATUS status, ZOOM_SDK_NAMESP
 	{
 	case ZOOM_SDK_NAMESPACE::LOGIN_SUCCESS:
 		{
-			SwitchUIPageByType(UIPAGE_PT);
+			//SwitchUIPageByType(UIPAGE_PT);
 			if (m_preMeetingServiceMgr)
-			{
 				m_preMeetingServiceMgr->Init();
-			}
+			
+			m_bStar = true;
+			//SwitchUIPageByType(UIPAGE_START);
+
+			if (m_pMeetingServiceMgr)
+				m_pMeetingServiceMgr->Init();
+
+			Start();
 		}
 		break;
 	case ZOOM_SDK_NAMESPACE::LOGIN_PROCESSING:
